@@ -2,10 +2,10 @@
 
 # nekuva-exts
 
-**Manga source parsers for the [Nekuva](https://github.com/NekoSukuriputo/nekuva) reader.**
+**Manga source parsers for the [Nekuva](https://github.com/Neko-Koubou/nekuva) reader.**
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![JitPack](https://img.shields.io/jitpack/version/com.github.NekoSukuriputo/nekuva-exts)](https://jitpack.io/#NekoSukuriputo/nekuva-exts)
+[![JitPack](https://img.shields.io/jitpack/version/com.github.Neko-Koubou/nekuva-exts)](https://jitpack.io/#Neko-Koubou/nekuva-exts)
 ![Kotlin](https://img.shields.io/badge/Kotlin-JVM-7F52FF)
 
 </div>
@@ -15,7 +15,7 @@
 ## About
 
 **nekuva-exts** is a Kotlin (JVM) library of manga source parsers/scrapers used by the
-**[Nekuva](https://github.com/NekoSukuriputo/nekuva)** app. It contains well over a thousand
+**[Nekuva](https://github.com/Neko-Koubou/nekuva)** app. It contains well over a thousand
 parsers spanning many languages, exposed through a small, stable contract so the host app can
 fetch catalogs, details, chapters, and pages from each source.
 
@@ -27,9 +27,9 @@ source library can be versioned and published independently.
 nekuva-exts is a fork of [DokiTeam/doki-exts](https://github.com/DokiTeam), which derives from
 [KotatsuApp/kotatsu-parsers](https://github.com/KotatsuApp/kotatsu-parsers). Huge thanks to the
 Doki and Kotatsu teams and all upstream contributors. It is now maintained independently by
-[NekoSukuriputo](https://github.com/NekoSukuriputo).
+[Neko-Koubou](https://github.com/Neko-Koubou).
 
-- **Extension issues:** <https://github.com/NekoSukuriputo/nekuva-exts/issues>
+- **Extension issues:** <https://github.com/Neko-Koubou/nekuva-exts/issues>
 
 
 ## Using it (as a dependency)
@@ -43,7 +43,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.NekoSukuriputo:nekuva-exts:<tag>") {
+    implementation("com.github.Neko-Koubou:nekuva-exts:<tag>") {
         // Android already bundles org.json in the platform; exclude it to avoid a conflict.
         exclude(group = "org.json", module = "json")
     }
