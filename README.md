@@ -6,7 +6,7 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![JitPack](https://img.shields.io/jitpack/version/com.github.Neko-Koubou/nekuva-exts)](https://jitpack.io/#Neko-Koubou/nekuva-exts)
-![Kotlin](https://img.shields.io/badge/Kotlin-JVM-7F52FF)
+![Kotlin](https://img.shields.io/badge/Kotlin-KMP%20(JVM%20%26%20iOS)-7F52FF)
 
 </div>
 
@@ -14,13 +14,25 @@
 
 ## About
 
-**nekuva-exts** is a Kotlin (JVM) library of manga source parsers/scrapers used by the
-**[Nekuva](https://github.com/Neko-Koubou/nekuva)** app. It contains well over a thousand
-parsers spanning many languages, exposed through a small, stable contract so the host app can
-fetch catalogs, details, chapters, and pages from each source.
+**nekuva-exts** is a Kotlin Multiplatform library of manga source parsers/scrapers used by the
+**[Nekuva](https://github.com/Neko-Koubou/nekuva)** app. It targets both **JVM** (Android & Desktop)
+and **iOS** (`iosArm64` & `iosSimulatorArm64`), containing well over a thousand parsers spanning
+many languages, exposed through a small, stable contract so the host app can fetch catalogs, details,
+chapters, and pages from each source.
 
 Keeping parsers in their own repository means the UI app stays free of site-specific code, and the
 source library can be versioned and published independently.
+
+## Platforms & Architecture
+
+| Platform | Technology / Parser Engine | Supported Targets |
+|---|---|---|
+| **JVM** (Android & Desktop) | OkHttp + Jsoup | `jvm` |
+| **iOS** (Apple devices) | Ksoup + Okio + iOS Compat Layer | `iosArm64`, `iosSimulatorArm64` |
+
+- **JVM Engine**: Uses OkHttp and Jsoup for high-performance scraping and networking.
+- **iOS Engine**: Uses [Ksoup](https://github.com/fleeksoft/ksoup) and an internal Kotlin/Native compatibility layer (`org.nekosukuriputo.nekuva.ioscompat.*`) that bridges Java/Android utilities (e.g., `Base64`, `SimpleDateFormat`, `URI`, `ThreadLocal`, `ArrayMap`, `LruLinkedHashMap`) to Kotlin/Native.
+- **Automated Source Transform**: The `syncIosParserSources` Gradle task automatically adapts JVM parser declarations and KSP catalog registrations into the iOS source set at build time, ensuring 100% of the parsers run seamlessly on iOS without manual duplication.
 
 ## Credits & lineage
 
@@ -30,7 +42,6 @@ Doki and Kotatsu teams and all upstream contributors. It is now maintained indep
 [Neko-Koubou](https://github.com/Neko-Koubou).
 
 - **Extension issues:** <https://github.com/Neko-Koubou/nekuva-exts/issues>
-
 
 ## Using it (as a dependency)
 
@@ -42,9 +53,10 @@ repositories {
     maven("https://jitpack.io")
 }
 
+// In commonMain (Multiplatform) or jvmMain:
 dependencies {
     implementation("com.github.Neko-Koubou:nekuva-exts:<tag>") {
-        // Android already bundles org.json in the platform; exclude it to avoid a conflict.
+        // Android already bundles org.json in the platform; exclude it if compiling for Android JVM
         exclude(group = "org.json", module = "json")
     }
 }
@@ -72,7 +84,9 @@ directly.
 Requires **JDK 17**.
 
 ```bash
-./gradlew build                       # compile + run tests
+./gradlew build                       # compile JVM & iOS + run tests
+./gradlew compileKotlinIosSimulatorArm64 # compile iOS Simulator arm64
+./gradlew compileKotlinIosArm64       # compile iOS device arm64
 ./gradlew publishToMavenLocal -x test # install to ~/.m2 for local consumption
 ```
 
@@ -81,12 +95,6 @@ Requires **JDK 17**.
   `explicitApiWarning()`; keep public API explicit.
 - The `@MangaSourceParser` KSP processor (module `nekuva-ksp`) generates the source registry at
   build time.
-
-## Roadmap (Kotlin Multiplatform)
-
-nekuva-exts is currently **JVM-only** (it relies on OkHttp + Jsoup). To support Nekuva on iOS, the
-networking and HTML layers will need a multiplatform path (e.g. Ktor + a multiplatform HTML
-parser). This is planned for a later phase and tracked alongside Nekuva's own migration.
 
 ## License
 
