@@ -90,3 +90,5 @@ local.properties
 GEMINI.md
 hs_*
 *.pem
+.codegraph/
+.vscode/
