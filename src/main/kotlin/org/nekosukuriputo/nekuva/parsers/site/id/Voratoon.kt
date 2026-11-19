@@ -1,5 +1,6 @@
 package org.nekosukuriputo.nekuva.parsers.site.id
 
+import org.nekosukuriputo.nekuva.parsers.Broken
 import org.nekosukuriputo.nekuva.parsers.MangaLoaderContext
 import org.nekosukuriputo.nekuva.parsers.MangaSourceParser
 import org.nekosukuriputo.nekuva.parsers.config.ConfigKey
@@ -34,11 +35,12 @@ import java.text.SimpleDateFormat
 import java.util.EnumSet
 import java.util.Locale
 
+@Broken("Backend API payload is encrypted (x-payload-encrypted: v1) and chapter pages require Cloudflare Turnstile verification")
 @MangaSourceParser("VORATOON", "Voratoon", "id")
 internal class Voratoon(context: MangaLoaderContext) :
 	PagedMangaParser(context, MangaParserSource.VORATOON, 30) {
 
-	override val configKeyDomain = ConfigKey.Domain("v1.voratoon.com")
+	override val configKeyDomain = ConfigKey.Domain("voratoon.co", "13.voratoon.com", "v1.voratoon.com")
 	override val userAgentKey = ConfigKey.UserAgent(UserAgents.KOTATSU)
 	private val apiUrl = "api.voratoon.com" // simulates API requests similar to web
 
